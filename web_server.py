@@ -3,6 +3,7 @@ from miner_controller import MinerController
 from config import Config
 from scheduler import Scheduler
 import threading
+from datetime import datetime
 
 app = Flask(__name__)
 config = Config()
@@ -13,6 +14,14 @@ current_state = {}
 @app.route('/state', methods=['GET'])
 def get_state():
     return jsonify(current_state)
+
+# Endpoint to get the state of a specific miner
+@app.route('/state/<miner_ip>', methods=['GET'])
+def get_state_for_miner(miner_ip):
+    if miner_ip in current_state:
+        return jsonify({miner_ip: current_state[miner_ip]})
+    else:
+        return jsonify({"error": "No state found for miner IP"}), 404
 
 @app.route('/logs', methods=['GET'])
 def get_logs():
@@ -36,9 +45,13 @@ def set_profile(miner_ip, profile):
             "profile": profile,
             "state": 'active' if profile != 'sleep' else 'asleep'
         }
+        # Log the manual profile change
+        timestamp = datetime.now().isoformat()
+        miner_controller.logs[miner_ip].append((timestamp, profile, 'manual_update'))
         return jsonify({"message": f"Profile of miner {miner_ip} set to {profile}"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
 
 def start_scheduler():   
     # Log in miners and set initial state

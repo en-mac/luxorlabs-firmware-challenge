@@ -60,7 +60,6 @@ class MinerController:
         self.miner_states[miner_ip] = mode
         return response.json()
 
-
     def update_miner_mode(self, miner_ip):
         period = get_current_time_period()
         if period == 'overclock':
@@ -80,10 +79,9 @@ class MinerController:
             self.curtail(miner_ip, profile)
             state = 'asleep'
         
-        timestamp = datetime.now().isoformat()  # Get the current timestamp
+        timestamp = datetime.now().isoformat()
         print(f"Miner {miner_ip} updated to {profile} with state {state} at {timestamp}")
         self.logs[miner_ip].append((timestamp, profile, state))
-        return profile, state
         return profile, state
 
     def get_logs(self, miner_ip):
