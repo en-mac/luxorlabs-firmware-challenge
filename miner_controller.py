@@ -1,5 +1,6 @@
 import requests
 from collections import defaultdict
+from datetime import datetime
 from utils import get_current_time_period
 
 class MinerController:
@@ -50,9 +51,15 @@ class MinerController:
         payload = {"token": token, "mode": mode}
         print(f"Sending curtail payload for {miner_ip}: {payload}")
         response = requests.post(f"{self.api_url}/curtail", json=payload)
+        if response.status_code == 401:
+            print(f"Token expired for {miner_ip}, re-authenticating...")
+            self.login(miner_ip)  # Re-authenticate
+            payload["token"] = self.tokens[miner_ip]
+            response = requests.post(f"{self.api_url}/curtail", json=payload)
         response.raise_for_status()
         self.miner_states[miner_ip] = mode
         return response.json()
+
 
     def update_miner_mode(self, miner_ip):
         period = get_current_time_period()
@@ -73,8 +80,10 @@ class MinerController:
             self.curtail(miner_ip, profile)
             state = 'asleep'
         
-        print(f"Miner {miner_ip} updated to {profile} with state {state}")
-        self.logs[miner_ip].append((profile, state))
+        timestamp = datetime.now().isoformat()  # Get the current timestamp
+        print(f"Miner {miner_ip} updated to {profile} with state {state} at {timestamp}")
+        self.logs[miner_ip].append((timestamp, profile, state))
+        return profile, state
         return profile, state
 
     def get_logs(self, miner_ip):

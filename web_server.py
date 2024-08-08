@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from miner_controller import MinerController
 from config import Config
 from scheduler import Scheduler
@@ -17,6 +17,28 @@ def get_state():
 @app.route('/logs', methods=['GET'])
 def get_logs():
     return jsonify(miner_controller.logs)
+
+# Endpoint to get the logs of a specific miner
+@app.route('/logs/<miner_ip>', methods=['GET'])
+def get_logs_for_miner(miner_ip):
+    if miner_ip in miner_controller.logs:
+        return jsonify({miner_ip: miner_controller.logs[miner_ip]})
+    else:
+        return jsonify({"error": "No logs found for miner IP"}), 404
+
+@app.route('/set_profile/<miner_ip>/<profile>', methods=['POST'])
+def set_profile(miner_ip, profile):
+    try:
+        miner_controller.login(miner_ip)
+        miner_controller.set_profile(miner_ip, profile)
+        current_state[miner_ip] = {
+            "token": miner_controller.tokens[miner_ip],
+            "profile": profile,
+            "state": 'active' if profile != 'sleep' else 'asleep'
+        }
+        return jsonify({"message": f"Profile of miner {miner_ip} set to {profile}"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 def start_scheduler():   
     # Log in miners and set initial state
