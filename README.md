@@ -52,27 +52,33 @@ This project is a control application for managing the operation of a fleet of m
 
 - **GET /state**
   - Description: Get the current state of all miners.
+  - Access: [http://localhost:8000/state]
   - Response: JSON with the current state of miners.
 
 - **GET /state/<miner_ip>**
   - Description: Get the state of a specific miner.
+  - Access: [http://localhost:8000/state/<miner_ip>]
   - Response: JSON with the state of the specified miner, or an error message if not found.
 
 - **GET /logs**
   - Description: Get the logs of all miners.
+  - Access: [http://localhost:8000/logs]
   - Response: JSON with logs for all miners.
 
 - **GET /logs/<miner_ip>**
   - Description: Get the logs of a specific miner.
+  - Access: [http://localhost:8000/logs/<miner_ip>]
   - Response: JSON with the logs of the specified miner, or an error message if not found.
 
 - **POST /set_profile/<miner_ip>/<profile>**
   - Description: Set the profile for a specific miner and update its state.
-  - Response: JSON with a success message or an error message.
+  - Access: Must be done via curl.
   - Example Usage:
     ```
     curl -X POST http://localhost:8000/set_profile/192.168.1.1/overclock
     ```
+  - Response: JSON with a success message or an error message.
+
 
 ## Functionality
 
