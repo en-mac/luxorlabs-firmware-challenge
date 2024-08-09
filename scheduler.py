@@ -1,9 +1,8 @@
+import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-from datetime import datetime
-from utils import get_current_time_period
 from apscheduler.triggers.interval import IntervalTrigger
-
+from utils import get_current_time_period
 import time
 
 class Scheduler:
@@ -17,21 +16,17 @@ class Scheduler:
         self.scheduler.start()
 
     def schedule_jobs(self):
-        # Schedule jobs at specified times
-        self.scheduler.add_job(self.run, CronTrigger(hour=0, minute=0))
-        self.scheduler.add_job(self.run, CronTrigger(hour=6, minute=0))
-        self.scheduler.add_job(self.run, CronTrigger(hour=12, minute=0))
-        self.scheduler.add_job(self.run, CronTrigger(hour=18, minute=0))
+        if os.getenv('TEST_MODE') == 'true':
+            # Testing mode
+            self.scheduler.add_job(self.run, IntervalTrigger(seconds=15))
+        else:
+            # Production mode
+            self.scheduler.add_job(self.run, CronTrigger(hour=0, minute=0))
+            self.scheduler.add_job(self.run, CronTrigger(hour=6, minute=0))
+            self.scheduler.add_job(self.run, CronTrigger(hour=12, minute=0))
+            self.scheduler.add_job(self.run, CronTrigger(hour=18, minute=0))
         # Perform initial update immediately
         self.run()
-
-    # ## TESTING#
-    # def schedule_jobs(self):
-    #     # Schedule jobs to run every 5 seconds for testing
-    #     self.scheduler.add_job(self.run, IntervalTrigger(seconds=15))
-    #     # Perform initial update immediately
-    #     self.run()
-
 
     def run(self):
         new_period = get_current_time_period()

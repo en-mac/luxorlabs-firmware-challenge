@@ -37,6 +37,11 @@ class MinerController:
         payload = {"token": token, "profile": profile}
         print(f"Sending profileset payload for {miner_ip}: {payload}")
         response = requests.post(f"{self.api_url}/profileset", json=payload)
+        if response.status_code == 401:
+            print(f"Token expired for {miner_ip}, re-authenticating...")
+            self.login(miner_ip)  # Re-authenticate
+            payload["token"] = self.tokens[miner_ip]
+            response = requests.post(f"{self.api_url}/profileset", json=payload)
         response.raise_for_status()
         self.miner_profiles[miner_ip] = profile
         return response.json()
@@ -56,8 +61,11 @@ class MinerController:
             self.login(miner_ip)  # Re-authenticate
             payload["token"] = self.tokens[miner_ip]
             response = requests.post(f"{self.api_url}/curtail", json=payload)
+        if response.status_code == 400:
+            print(f"Bad request for miner {miner_ip}: {response.json()}")
         response.raise_for_status()
         self.miner_states[miner_ip] = mode
+        print(f"Curtail response status: {response.status_code}, response text: {response.text}")
         return response.json()
 
     def update_miner_mode(self, miner_ip):
@@ -75,9 +83,9 @@ class MinerController:
             self.set_profile(miner_ip, profile)
             state = 'active'
         elif period == 'curtail':
-            profile = 'sleep'
-            self.curtail(miner_ip, profile)
-            state = 'asleep'
+            self.curtail(miner_ip, 'sleep')
+            profile = self.miner_profiles.get(miner_ip, 'unknown')  # Keep the current profile
+            state = 'sleep'
         
         timestamp = datetime.now().isoformat()
         print(f"Miner {miner_ip} updated to {profile} with state {state} at {timestamp}")
