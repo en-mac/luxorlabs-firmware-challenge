@@ -8,11 +8,11 @@ This project is a control application for managing the operation of a fleet of m
     - 00:00 to 06:00: Overclock
     - 06:00 to 12:00: Normal
     - 12:00 to 18:00: Underclock
-    - 18:00 to 00:00: Curtail (Sleep)
-- You can also manually set the profile or state for an individual miner to override the schedule.
+    - 18:00 to 00:00: Curtail
+- You can also manually set the profile for an individual miner to override the schedule.
 
 ## Assumptions
-- The app.py file cannot be modified.
+- app.py cannot be modified.
 
 ## Requirements
 
@@ -106,53 +106,14 @@ This project is a control application for managing the operation of a fleet of m
   - Access: Must be done via curl.
   - Example Usage:
     ```sh
-    curl -X POST http://localhost:8000/set_state/192.168.1.1/sleep
+    curl -X POST http://localhost:8000/set_state/192.168.1.1/active
     ```
   - Response: JSON with a success message or an error message.
 
-## Testing the Application
+## Testing
 
-1. **Start the API Server:**
-    ```sh
-    python app.py
-    ```
+To run tests, use the following command:
 
-2. **Set the mode for testing:**
-    ```sh
-    export TEST_MODE=true
-    ```
-
-3. **Start the Flask web server:**
-    ```sh
-    python web_server.py
-    ```
-
-4. **Run the test scripts in separate terminals:**
-
-    **Test setting profiles:**
-    ```sh
-    python test_set_profile.py
-    ```
-
-    **Test setting states:**
-    ```sh
-    python test_set_state.py
-    ```
-
-## Notes
-- Logging is enabled to help track the scheduler's actions and any potential issues.
-- Upon an Unauthorized error from the API, the application will attempt to re-authenticate before retrying the request.
-- If the `web_server.py` script is stopped, the `app.py` script must also be restarted before the `web_server.py` script can be restarted.
-- When switching from `TEST_MODE=true` to `TEST_MODE=false`, the `app.py` script must be restarted as well.
-
-## Troubleshooting
-
-- Ensure the API server is running before starting the web server.
-- Verify that you use curl for POST requests to set individual miner profiles and states.
-- If the `web_server.py` script is stopped, the `app.py` script must also be restarted before the `web_server.py` script can be restarted.
-- When switching from `TEST_MODE=true` to `TEST_MODE=false`, the `app.py` script must be restarted as well.
-
-## Thoughts/Future Improvements
-- Add a database to store miner logs by IP for querying and historical tracking. This could also be used for session persistence.
-- Develop a UI to interact with the application and display the state of the miners.
-- Assuming the app.py script represents a live API, the app.py script should not require a restart when restarting the web_server.py script. This could be improved by handling the reconnection logic in the web server script.
+```sh
+python -m unittest discover -s tests
+```
