@@ -1,0 +1,100 @@
+(venv) ➜  luxor-firmware-challenge git:(main) ✗ python web_server.py
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:8000
+Press CTRL+C to quit
+Login successful for 192.168.1.1, token: 192.168.1.1_token
+Login successful for 192.168.1.2, token: 192.168.1.2_token
+Login successful for 192.168.1.3, token: 192.168.1.3_token
+Login successful for 192.168.1.1, token: 192.168.1.1_token
+Login attempt:  192.168.1.1_token
+Sending profileset payload for 192.168.1.1: {'token': '192.168.1.1_token', 'profile': 'underclock'}
+Miner 192.168.1.1 updated to underclock with state active at 2024-08-18T17:48:38.673434
+Login successful for 192.168.1.2, token: 192.168.1.2_token
+Login attempt:  192.168.1.2_token
+Sending profileset payload for 192.168.1.2: {'token': '192.168.1.2_token', 'profile': 'underclock'}
+Miner 192.168.1.2 updated to underclock with state active at 2024-08-18T17:48:38.676776
+Login successful for 192.168.1.3, token: 192.168.1.3_token
+Login attempt:  192.168.1.3_token
+Sending profileset payload for 192.168.1.3: {'token': '192.168.1.3_token', 'profile': 'underclock'}
+Miner 192.168.1.3 updated to underclock with state active at 2024-08-18T17:48:38.680015
+127.0.0.1 - - [18/Aug/2024 17:48:43] "GET /logs HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 17:48:46] "GET /state HTTP/1.1" 404 -
+127.0.0.1 - - [18/Aug/2024 17:48:46] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [18/Aug/2024 17:48:56] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 17:58:54] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 17:58:55] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 17:59:12] "GET /miner_configuration HTTP/1.1" 200 -
+Login successful for 192.168.1.1, token: 192.168.1.1_token
+Login attempt:  192.168.1.1_token
+Sending curtail payload for 192.168.1.1: {'token': '192.168.1.1_token', 'mode': 'sleep'}
+Curtail response status: 200, response text: {
+  "message": "Miner curtail state updated to sleep."
+}
+
+Miner 192.168.1.1 updated to underclock with state sleep at 2024-08-18T18:00:00.039913
+Login successful for 192.168.1.2, token: 192.168.1.2_token
+Login attempt:  192.168.1.2_token
+Sending curtail payload for 192.168.1.2: {'token': '192.168.1.2_token', 'mode': 'sleep'}
+Curtail response status: 200, response text: {
+  "message": "Miner curtail state updated to sleep."
+}
+
+Miner 192.168.1.2 updated to underclock with state sleep at 2024-08-18T18:00:00.043409
+Login successful for 192.168.1.3, token: 192.168.1.3_token
+Login attempt:  192.168.1.3_token
+Sending curtail payload for 192.168.1.3: {'token': '192.168.1.3_token', 'mode': 'sleep'}
+Curtail response status: 200, response text: {
+  "message": "Miner curtail state updated to sleep."
+}
+
+Miner 192.168.1.3 updated to underclock with state sleep at 2024-08-18T18:00:00.046547
+127.0.0.1 - - [18/Aug/2024 18:00:01] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 18:00:03] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 18:00:10] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 23:53:22] "GET /logs HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 23:53:25] "GET /logs HTTP/1.1" 200 -
+127.0.0.1 - - [18/Aug/2024 23:53:33] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:00:23] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:00:31] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:00:44] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:02:44] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:03:09] "GET /profile/192.168.1.1/overclock HTTP/1.1" 404 -
+127.0.0.1 - - [19/Aug/2024 00:03:13] "GET /profile/192.168.1.1/overclocked HTTP/1.1" 404 -
+Login successful for 192.168.1.1, token: 192.168.1.1_token
+Sending profileset payload for 192.168.1.1: {'token': '192.168.1.1_token', 'profile': 'overclock'}
+127.0.0.1 - - [19/Aug/2024 00:03:56] "POST /set_profile/192.168.1.1/overclock HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:03:59] "GET /miner_configuration HTTP/1.1" 200 -
+Login successful for 192.168.1.2, token: 192.168.1.2_token
+Sending profileset payload for 192.168.1.2: {'token': '192.168.1.2_token', 'profile': 'overclock'}
+127.0.0.1 - - [19/Aug/2024 00:04:06] "POST /set_profile/192.168.1.2/overclock HTTP/1.1" 200 -
+Login successful for 192.168.1.3, token: 192.168.1.3_token
+Sending profileset payload for 192.168.1.3: {'token': '192.168.1.3_token', 'profile': 'overclock'}
+127.0.0.1 - - [19/Aug/2024 00:04:10] "POST /set_profile/192.168.1.3/overclock HTTP/1.1" 200 -
+Login successful for 192.168.1.1, token: 192.168.1.1_token
+Sending curtail payload for 192.168.1.1: {'token': '192.168.1.1_token', 'mode': 'active'}
+Curtail response status: 200, response text: {
+  "message": "Miner curtail state updated to active."
+}
+
+127.0.0.1 - - [19/Aug/2024 00:04:20] "POST /set_state/192.168.1.1/active HTTP/1.1" 200 -
+Login successful for 192.168.1.2, token: 192.168.1.2_token
+Sending curtail payload for 192.168.1.2: {'token': '192.168.1.2_token', 'mode': 'active'}
+Curtail response status: 200, response text: {
+  "message": "Miner curtail state updated to active."
+}
+
+127.0.0.1 - - [19/Aug/2024 00:04:25] "POST /set_state/192.168.1.2/active HTTP/1.1" 200 -
+Login successful for 192.168.1.3, token: 192.168.1.3_token
+Sending curtail payload for 192.168.1.3: {'token': '192.168.1.3_token', 'mode': 'active'}
+Curtail response status: 200, response text: {
+  "message": "Miner curtail state updated to active."
+}
+
+127.0.0.1 - - [19/Aug/2024 00:04:29] "POST /set_state/192.168.1.3/active HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 00:04:31] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 05:55:07] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 06:00:10] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 06:00:21] "GET /miner_configuration HTTP/1.1" 200 -
+127.0.0.1 - - [19/Aug/2024 06:01:21] "GET /miner_configuration HTTP/1.1" 200 -

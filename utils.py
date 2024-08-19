@@ -1,12 +1,12 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def get_current_time_period():
-    if os.getenv('TEST_MODE') == 'true':
-        # Testing mode
-        now = datetime.now()
-        second = now.second
+    buffer = timedelta(seconds=30)  # Adjust the buffer as needed
+    now = datetime.now()
 
+    if os.getenv('TEST_MODE') == 'true':
+        second = now.second
         if 0 <= second < 15:
             return 'overclock'
         elif 15 <= second < 30:
@@ -16,13 +16,14 @@ def get_current_time_period():
         else:
             return 'curtail'
     else:
-        # Production mode
-        now = datetime.now().time()
-        if now >= datetime.strptime("00:00", "%H:%M").time() and now < datetime.strptime("06:00", "%H:%M").time():
+        # Production mode with buffer
+        now_time = now.time()
+
+        if (datetime.combine(now.date(), datetime.strptime("00:00", "%H:%M").time()) - buffer).time() <= now_time < (datetime.combine(now.date(), datetime.strptime("06:00", "%H:%M").time()) + buffer).time():
             return 'overclock'
-        elif now >= datetime.strptime("06:00", "%H:%M").time() and now < datetime.strptime("12:00", "%H:%M").time():
+        elif (datetime.combine(now.date(), datetime.strptime("06:00", "%H:%M").time()) - buffer).time() <= now_time < (datetime.combine(now.date(), datetime.strptime("12:00", "%H:%M").time()) + buffer).time():
             return 'normal'
-        elif now >= datetime.strptime("12:00", "%H:%M").time() and now < datetime.strptime("18:00", "%H:%M").time():
+        elif (datetime.combine(now.date(), datetime.strptime("12:00", "%H:%M").time()) - buffer).time() <= now_time < (datetime.combine(now.date(), datetime.strptime("18:00", "%H:%M").time()) + buffer).time():
             return 'underclock'
         else:
             return 'curtail'

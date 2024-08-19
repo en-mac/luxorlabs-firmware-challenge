@@ -67,30 +67,45 @@ class MinerController:
         self.miner_states[miner_ip] = mode
         print(f"Curtail response status: {response.status_code}, response text: {response.text}")
         return response.json()
-
+        
     def update_miner_mode(self, miner_ip):
         period = get_current_time_period()
+        profile = state = None
+
         if period == 'overclock':
             profile = 'overclock'
-            self.set_profile(miner_ip, profile)
             state = 'active'
+            self.set_profile(miner_ip, profile)
         elif period == 'normal':
             profile = 'normal'
-            self.set_profile(miner_ip, profile)
             state = 'active'
+            self.set_profile(miner_ip, profile)
         elif period == 'underclock':
             profile = 'underclock'
-            self.set_profile(miner_ip, profile)
             state = 'active'
+            self.set_profile(miner_ip, profile)
         elif period == 'curtail':
-            self.curtail(miner_ip, 'sleep')
-            profile = self.miner_profiles.get(miner_ip, 'unknown')  # Keep the current profile
             state = 'sleep'
-        
+            self.curtail(miner_ip, state)
+            profile = self.miner_profiles.get(miner_ip, 'unknown')
+
         timestamp = datetime.now().isoformat()
         print(f"Miner {miner_ip} updated to {profile} with state {state} at {timestamp}")
         self.logs[miner_ip].append((timestamp, profile, state))
+
+        # Validation step
+        self.validate_and_correct(miner_ip, profile, state, period)
+
         return profile, state
+
+    def validate_and_correct(self, miner_ip, profile, state, expected_period):
+        actual_period = get_current_time_period()
+
+        if actual_period != expected_period:
+            print(f"Discrepancy detected for miner {miner_ip}. Expected: {expected_period}, but current period is: {actual_period}. Correcting...")
+            self.update_miner_mode(miner_ip)  # Reapply the correct state based on current period
+        else:
+            print(f"Miner {miner_ip} state and profile are correct for the period: {actual_period}.")
 
     def get_logs(self, miner_ip):
         return self.logs[miner_ip]

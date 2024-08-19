@@ -25,6 +25,13 @@ class Scheduler:
             self.scheduler.add_job(self.run, CronTrigger(hour=6, minute=0))
             self.scheduler.add_job(self.run, CronTrigger(hour=12, minute=0))
             self.scheduler.add_job(self.run, CronTrigger(hour=18, minute=0))
+
+            # Redundant checks shortly after critical transitions
+            self.scheduler.add_job(self.run, CronTrigger(hour=0, minute=1))
+            self.scheduler.add_job(self.run, CronTrigger(hour=6, minute=1))
+            self.scheduler.add_job(self.run, CronTrigger(hour=12, minute=1))
+            self.scheduler.add_job(self.run, CronTrigger(hour=18, minute=1))
+
         # Perform initial update immediately
         self.run()
 

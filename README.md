@@ -117,3 +117,11 @@ To run tests, use the following command:
 ```sh
 python -m unittest discover -s tests
 ```
+
+
+## Future Improvements
+- Create a UI for the application to make it more user-friendly.
+- Add a database to store the configuration and logs of the miners so that we can query them later.
+
+## Notes
+- It was noticed that during TEST_MODE=false, the application does not update the profile/state of the miners at 0000 hours. The logs were added to a temporary location to help troubleshoot this issue. The attempted resolution has been committed.
