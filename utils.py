@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 def get_current_time_period():
-    buffer = timedelta(seconds=30)  # Adjust the buffer as needed
+    buffer = timedelta(seconds=15)  # Adjust the buffer as needed
     now = datetime.now()
 
     if os.getenv('TEST_MODE') == 'true':
